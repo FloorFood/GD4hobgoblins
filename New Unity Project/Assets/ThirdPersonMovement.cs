@@ -16,7 +16,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     //Jump Stuff
     Vector3 velocity;
-    public float gravity = -9.8f;
+    public float gravity = -4.0f;
     public Transform groundCheck;
     public float groundDist;
     public LayerMask groundMask;
@@ -35,11 +35,8 @@ public class ThirdPersonMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-
-        
-
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
@@ -49,7 +46,7 @@ public class ThirdPersonMovement : MonoBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDist, groundMask);
         if (isGrounded && velocity.y < 0)
         {
-            velocity.y = -1f;
+            velocity.y = -1.0f;
         }
 
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded ) // && dir.magnitude <= 0.05f
@@ -57,10 +54,7 @@ public class ThirdPersonMovement : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
         }
-
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-
+        moveDir = Vector3.zero;
         if (dir.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
@@ -68,7 +62,9 @@ public class ThirdPersonMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
-            controller.Move(moveDir.normalized * speed * Time.deltaTime);
+            //controller.Move(moveDir.normalized * speed * Time.deltaTime);
         }
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(moveDir * speed * Time.deltaTime + velocity * Time.deltaTime);
     }
 }

@@ -15,7 +15,7 @@ public class ThirdPersonDash : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(Input.GetMouseButtonDown(0))
         {

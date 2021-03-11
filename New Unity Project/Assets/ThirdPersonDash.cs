@@ -15,7 +15,7 @@ public class ThirdPersonDash : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if(Input.GetMouseButtonDown(0))
         {
@@ -28,7 +28,7 @@ public class ThirdPersonDash : MonoBehaviour
 
         while(Time.time < startTime + dashTime)
         {
-            movement.controller.Move(movement.moveDir * dashSpeed * Time.deltaTime);
+            movement.controller.Move(movement.moveDir * dashSpeed * Time.deltaTime); // + movement.velocity * Time.deltaTime); // ! moveDir * speed * Time.deltaTime + velocity * Time.deltaTime
             yield return null;
         }
     }

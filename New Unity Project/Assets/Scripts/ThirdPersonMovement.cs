@@ -41,6 +41,7 @@ public class ThirdPersonMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         FindObjectOfType<AudioManager>().Play("Ambience");
+        FindObjectOfType<AudioManager>().Play("BGM");
     }
 
     // Update is called once per frame

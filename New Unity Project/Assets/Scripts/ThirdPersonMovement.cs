@@ -40,6 +40,7 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
+        FindObjectOfType<AudioManager>().Play("Ambience");
     }
 
     // Update is called once per frame
@@ -52,6 +53,7 @@ public class ThirdPersonMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded ) 
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            FindObjectOfType<AudioManager>().Play("Jump");
         }
         if(Input.GetMouseButtonDown(0) && !isDashing && canDash)
         {
@@ -60,6 +62,7 @@ public class ThirdPersonMovement : MonoBehaviour
             canDash = false;
             StartDashPos = transform.position;
             gameObject.layer = 10;
+            FindObjectOfType<AudioManager>().Play("Dash");
         }
     }
     void FixedUpdate()
@@ -110,6 +113,7 @@ public class ThirdPersonMovement : MonoBehaviour
             {
                 transform.position = StartDashPos;
                 Debug.Log("teleported");
+                FindObjectOfType<AudioManager>().Play("DashFail");
             }
             gameObject.layer = 9;
         }

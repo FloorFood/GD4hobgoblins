@@ -5,7 +5,7 @@ using UnityEngine;
 public class FadeInOutLevels : MonoBehaviour
 {
 
-    public List<GameObject> levels;
+    public List<GameObject> levels = new List<GameObject>();
     public int stage = 0;
     public float fadeSpeed = 1;
     private bool next = false;
@@ -16,7 +16,6 @@ public class FadeInOutLevels : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        levels = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -55,6 +54,7 @@ public class FadeInOutLevels : MonoBehaviour
                         fadingIn = true;
                         fading = false;
                         stage++;
+                        levels[stage].gameObject.SetActive(false);
                     }
                 }
             }
@@ -62,9 +62,10 @@ public class FadeInOutLevels : MonoBehaviour
         }
     }
 
-    void LoadStage()
+    public void LoadStage()
     {
         next = true;
         fadingIn = stage == 0 ? true : false;
+        levels[stage].gameObject.SetActive(true);
     }
 }

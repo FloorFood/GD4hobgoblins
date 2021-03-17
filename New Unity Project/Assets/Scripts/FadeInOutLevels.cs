@@ -7,11 +7,11 @@ public class FadeInOutLevels : MonoBehaviour
 
     public List<GameObject> levels = new List<GameObject>();
     public int stage = 0;
-    public float fadeSpeed = 1;
+    public float fadeSpeed;
     private bool next = false;
     private bool fading = false;
     private bool fadingIn = false;
-    List<Material> mats = new List<Material>();
+    public List<Material> mats = new List<Material>();
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +30,10 @@ public class FadeInOutLevels : MonoBehaviour
                 for(int i = 0; i < numChild; i++)
                 {
                     GameObject child = levels[stage].transform.GetChild(i).gameObject;
-                    foreach(Material mat in child.GetComponent<Renderer>().materials)
-                    mats.Add(mat);
+                    for(int j = 0; j < child.GetComponent<Renderer>().materials.Length; j++)
+                    {
+                        mats.Add(child.GetComponent<Renderer>().materials[j]);
+                    }
                 }
                 fading = true;
             }
@@ -41,10 +43,11 @@ public class FadeInOutLevels : MonoBehaviour
                 {
                     Color ObjColor = mats[i].color;
                     float fadeAmount = ObjColor.a + (fadingIn == true ? fadeSpeed : -fadeSpeed);
+                    Debug.Log(fadeAmount);
 
                     ObjColor = new Color(ObjColor.r, ObjColor.g, ObjColor.b, fadeAmount);
                     mats[i].color = ObjColor;
-                    if(fadingIn && fadeAmount >= 255)
+                    if(fadingIn && fadeAmount >= 1)
                     {
                         fadingIn = false;
                         next = false;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class FadeInOutLevels : MonoBehaviour
 {
@@ -11,7 +12,11 @@ public class FadeInOutLevels : MonoBehaviour
     private bool next = false;
     private bool fading = false;
     private bool fadingIn = false;
-    public List<Material> mats = new List<Material>();
+    List<Material> mats = new List<Material>();
+
+    public List<Material> allMaterials = new List<Material>();
+
+    public bool start = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,16 +31,17 @@ public class FadeInOutLevels : MonoBehaviour
             if(!fading)
             {
                 mats.Clear();
-                int numChild = levels[stage].transform.childCount;
+                int numChild = levels[stage + (fadingIn && start ? 1 : 0)].transform.childCount;
                 for(int i = 0; i < numChild; i++)
                 {
-                    GameObject child = levels[stage].transform.GetChild(i).gameObject;
-                    for(int j = 0; j < child.GetComponent<Renderer>().materials.Length; j++)
+                    GameObject child = levels[stage + (fadingIn && start ? 1 : 0)].transform.GetChild(i).gameObject;
+                    for(int j = 0; j < child.GetComponent<Renderer>().sharedMaterials.Length; j++)
                     {
-                        mats.Add(child.GetComponent<Renderer>().materials[j]);
+                        mats.Add(child.GetComponent<Renderer>().sharedMaterials[j]);
                     }
                 }
                 fading = true;
+                mats = mats.Distinct<Material>().ToList<Material>();
             }
             if(fading)
             {
@@ -47,30 +53,64 @@ public class FadeInOutLevels : MonoBehaviour
 
                     ObjColor = new Color(ObjColor.r, ObjColor.g, ObjColor.b, fadeAmount);
                     mats[i].color = ObjColor;
-                    if(fadingIn && fadeAmount >= 1)
+                    if(fadingIn && mats[mats.Count -1].color.a >= 1)
                     {
                         fadingIn = false;
                         next = false;
-                        if (stage == 0)
+                        if(start) 
+                        {
                             stage++;
+                        }
+                        if(stage == 0 && !start) // if 0 and not start: start. if 0 and start: stage ++ if tart and stage != 0 ++
+                        {
+                            start = true;
+                        }
+                        return;
                     }
-                    if(!fadingIn && fadeAmount <= 0)
+                    if(!fadingIn && mats[mats.Count -1].color.a <= 0)
                     {
                         fadingIn = true;
                         fading = false;
-                        stage++;
-                        levels[stage].gameObject.SetActive(false);
+                        if(start)
+                        {
+                            levels[stage].gameObject.SetActive(false);
+                            if(stage < 2)
+                            levels[stage + 1].SetActive(true);
+                        //stage++;
+                        }
                     }
                 }
             }
-
         }
     }
 
     public void LoadStage()
     {
         next = true;
-        fadingIn = stage == 0 ? true : false;
-        levels[stage].gameObject.SetActive(true);
+        fadingIn = stage == 0 && !start ? true : false;
+
+        //levels[stage].gameObject.SetActive(true);
+        //if(stage < 2)
+        //levels[stage+1].gameObject.SetActive(true);
+    }
+
+    public void OnApplicationQuit() 
+    {
+        foreach (Material m in allMaterials)
+        {
+            Color c = m.color;
+            c.a = 0;
+           m.color = c;
+        }
+    }
+
+    private void Awake() 
+    {
+         foreach (Material m in allMaterials)
+        {
+            Color c = m.color;
+            c.a = 0;
+           m.color = c;
+        }
     }
 }

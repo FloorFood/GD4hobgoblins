@@ -51,6 +51,8 @@ public class FadeInOutLevels : MonoBehaviour
                     {
                         fadingIn = false;
                         next = false;
+                        if (stage == 0)
+                            stage++;
                     }
                     if(!fadingIn && fadeAmount <= 0)
                     {

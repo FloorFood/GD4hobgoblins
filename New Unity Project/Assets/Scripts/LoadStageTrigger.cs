@@ -9,7 +9,9 @@ public class LoadStageTrigger : MonoBehaviour
     public FadeInOutLevels fadeScript;
     private void OnTriggerEnter(Collider other)
     {
-        if(!isOn)
+        FindObjectOfType<AudioManager>().Play("Areafade");
+
+        if (!isOn)
         {
             fadeScript.LoadStage();
             isOn = true;

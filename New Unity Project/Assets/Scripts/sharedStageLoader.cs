@@ -12,7 +12,11 @@ public class sharedStageLoader : MonoBehaviour
         if(!isOn)
         {
             isOn = true;
-            if(friendTrigger.GetComponent<sharedStageLoader>().isOn)
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+            transform.GetChild(0).gameObject.SetActive(false);
+            FindObjectOfType<AudioManager>().Play("Checkpoint");
+
+            if (friendTrigger.GetComponent<sharedStageLoader>().isOn)
             {
                 fadeScript.LoadStage();
                 gameObject.SetActive(false);

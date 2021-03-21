@@ -49,9 +49,9 @@ public class FadeInOutLevels : MonoBehaviour
                 {
                     Color ObjColor = mats[i].color;
                     float fadeAmount = ObjColor.a + (fadingIn == true ? fadeSpeed : -fadeSpeed);
-                    Debug.Log(fadeAmount);
 
                     ObjColor = new Color(ObjColor.r, ObjColor.g, ObjColor.b, fadeAmount);
+
                     mats[i].color = ObjColor;
                     if(fadingIn && mats[mats.Count -1].color.a >= 1)
                     {
@@ -64,6 +64,11 @@ public class FadeInOutLevels : MonoBehaviour
                         if(stage == 0 && !start) // if 0 and not start: start. if 0 and start: stage ++ if tart and stage != 0 ++
                         {
                             start = true;
+                        }
+
+                        foreach (Material m in allMaterials)
+                        {
+                            StandardShaderUtility.ChangeRenderMode(m, StandardShaderUtility.BlendMode.Opaque);
                         }
                         return;
                     }
@@ -89,6 +94,14 @@ public class FadeInOutLevels : MonoBehaviour
         next = true;
         fadingIn = stage == 0 && !start ? true : false;
 
+        if(!fadingIn)
+        {
+            foreach (Material m in allMaterials)
+            {
+                StandardShaderUtility.ChangeRenderMode(m, StandardShaderUtility.BlendMode.Fade);
+            }
+        }
+
         //levels[stage].gameObject.SetActive(true);
         //if(stage < 2)
         //levels[stage+1].gameObject.SetActive(true);
@@ -100,7 +113,8 @@ public class FadeInOutLevels : MonoBehaviour
         {
             Color c = m.color;
             c.a = 0;
-           m.color = c;
+            m.color = c;
+            StandardShaderUtility.ChangeRenderMode(m, StandardShaderUtility.BlendMode.Fade);
         }
     }
 
@@ -110,7 +124,8 @@ public class FadeInOutLevels : MonoBehaviour
         {
             Color c = m.color;
             c.a = 0;
-           m.color = c;
+            m.color = c;
+            StandardShaderUtility.ChangeRenderMode(m, StandardShaderUtility.BlendMode.Fade);
         }
     }
 }

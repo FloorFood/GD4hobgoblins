@@ -3029,7 +3029,7 @@ GameObject:
   - component: {fileID: 5021634857062671530}
   - component: {fileID: 1624927693323327571}
   - component: {fileID: 9048255269803816783}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lantern v1 01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3123,7 +3123,7 @@ GameObject:
   - component: {fileID: 5021634856581880643}
   - component: {fileID: 1624927692724086714}
   - component: {fileID: 9048255269324114536}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Only Lantern v1.01 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
